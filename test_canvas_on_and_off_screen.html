@@ -11,36 +11,46 @@
     <button onclick="copyOne()">On-screen Canvas</button>
     <br>
 
-    <canvas id="canvasTwo" width="300" height="150" style="border:1px solid #d3d3d3;">
+    <canvas id="canvasTwo" style="border:1px solid #d3d3d3;">
     Your browser does not support the HTML5 canvas tag.</canvas>
 
-    <button onclick="copyTwo()">Off-screen Canvas</button>
+    <button onclick="createTwo()">Off-screen Canvas</button>
 
     <script>
 
     var c1 = document.getElementById("canvasOne");
+    var c2 = document.getElementById("canvasTwo");
     var ctx1 = c1.getContext("2d");
+    var ctx2 = c2.getContext("bitmaprenderer");
     ctx1.fillStyle = "cyan";
     ctx1.fillRect(10, 10, 50, 50);
 
-    var c2 = document.getElementById("canvasTwo");
-    var ctx2 = c2.getContext("2d");
+    // var c2 = document.getElementById("canvasTwo");
+    // var ctx2 = c2.getContext("2d");
 
-    var offscreen = document.createElement("canvas");
-    offscreen.width = '300';
-    offscreen.height = '150';
-    var context = offscreen.getContext("2d");
-    context.fillStyle = 'pink';
-    context.fillRect(10, 10, 50, 50);
+    // var offscreen = document.createElement("canvas");
+    // offscreen.width = '300';
+    // offscreen.height = '150';
+    // var context = offscreen.getContext("2d");
+    // context.fillStyle = 'pink';
+    // context.fillRect(10, 10, 50, 50);
 
     function copyOne() {
         var imgData = ctx1.getImageData(10, 10, 50, 50);
         ctx1.putImageData(imgData, 10, 70);
     }
 
-    function copyTwo() {
-        var imgData = context.getImageData(10, 10, 50, 50);
-        //ctx2.putImageData(imgData, 10, 10);
+    // function copyTwo() {
+    //     var imgData = context.getImageData(10, 10, 50, 50);
+    //     //ctx2.putImageData(imgData, 10, 10);
+    // }
+    function createTwo() {
+      var offscreen = new OffscreenCanvas(300, 150);
+      var offCtx = offscreen.getContext('webgl');
+      offCtx.clearColor(0.0, 0.0, 0.0, 1.0);
+      offCtx.clear(offCtx.COLOR_BUFFER_BIT);
+      var bitmapTwo = offscreen.transferToImageBitmap();
+      ctx2.transferImageBitmap(bitmapTwo);
     }
 
     </script>
